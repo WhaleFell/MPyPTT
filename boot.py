@@ -5,10 +5,14 @@
 
 import uos
 import machine
+import gc
 
 # uos.dupterm(None, 1) # disable REPL on UART(0)
 
-import gc
+
+# web ui
 # import webrepl
 # webrepl.start()
+
+# 手动触发垃圾回收!
 gc.collect()

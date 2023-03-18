@@ -1,5 +1,5 @@
 # encoding=utf8
-# utils/ConnectWIFI.py
+# utils.py
 import network
 import utime
 from machine import Pin
@@ -21,8 +21,10 @@ wifi_passwd = "992829hws"
 wifi = network.WLAN(network.STA_IF)  # 配置wifi模式为station
 
 
-# 重试函数,异常处理:(带参数的修饰器)
 def handle_error(tries=3):
+    """重试函数,异常处理:(带参数的修饰器)
+    if func not succes,return False.
+    """
     def deco(func):
         def wrapper(*arg, **kw):
             # 写逻辑
@@ -69,91 +71,13 @@ def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
     # ('192.168.1.100', '255.255.255.0', '192.168.1.1', '8.8.8.8')
 
 
-class SingSong(object):
-    """操作蜂鸣器类"""
-
-    def __init__(self, GPIO: int = 5):
-        self.buzzer = Pin(GPIO, Pin.OUT)  # 设置蜂鸣器GPIO口为输入模式
-        self.buzzer.value(0)
-
-    async def play(self, data: str, interval: int = 0.8,  loop: bool = False):
-        """异步操作蜂鸣器,使其按照规定的节奏
-        (该蜂鸣器是高电平触发!)
-        data 格式: 2-3-1-2-4
-        表示响2s停(interval)s 
-        loop 表示是否循环播放
-        """
-        lst = data.split("-")
-
-        while True:
-            for l in lst:
-                l = float(l)
-                self.start()
-                sleep(l)
-                self.stop()
-                # sleep(interval)  # 暂停
-                await uasyncio.sleep(interval)
-
-            if not loop:
-                break
-
-    def sync_play(self, data: str, interval: int = 0.8,  loop: bool = False):
-        """控制蜂鸣器"""
-        lst = data.split("-")
-
-        while True:
-            for l in lst:
-                l = float(l)
-                self.start()
-                sleep(l)
-                self.stop()
-                sleep(interval)  # 暂停
-
-            if not loop:
-                break
-
-    def start(self):
-        """设置为高电平,触发"""
-        self.buzzer.value(1)
-
-    def stop(self):
-        """设置为低电平,关闭"""
-        self.buzzer.value(0)
-
-    def __del__(self):
-        # 对象销毁时重新设置为低电平
-        print("Object deleted!")
-        self.buzzer.value(0)
-
-
-class HcSr501(object):
-    """操作Hc-Sr501的类"""
-
-    def __init__(self, GPIO: int = 5) -> None:
-        self.hc = Pin(GPIO, Pin.IN)
-        self.hc.value(0)  # 一开始设置低电平
-
-    @property
-    def value(self):
-        """属性值,获取当前电平状态"""
-        return self.hc.value()
-
-
-def get_dht11(pin: Pin) -> tuple:
-    """DHT11 温度传感器模块"""
-    d = dht.DHT11(pin)
-    d.measure()  # 启动测量
-    wd = d.temperature()
-    sd = d.humidity()
-    return wd, sd
-
-
 @handle_error(tries=3)
 def sync_ntp():
     """通过网络校准时间"""
-    ntptime.NTP_DELTA = 3155644800  # UTC+8
     ntptime.host = 'ntp1.aliyun.com'
     ntptime.settime()
+    utime.timezone(8 * 3600)  # 设置时区偏移量为东八区
+    print("Time set to: ", utime.localtime())
     return True
 
 

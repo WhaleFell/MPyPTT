@@ -1,12 +1,16 @@
 # config.py
-wifi_ssid = "HomeAP"
-wifi_passwd = "992829hws"
+import ubinascii
+import machine
+
+
+# wifi config
+WIFI_SSID = "HomeAP"
+WIFI_PASSWD = "992829hws"
 
 # MQTT config
-blinker_tk = "335562d5d103"
-mserver = "broker-cn.emqx.io"
-port = 1883
-
-client_id = "mqttx_b6b02f34"  # 可选
-user = None
-password = None
+MQTT_SERVER = "your_mqtt_server"
+MQTT_PORT = 1883
+MQTT_USER = "your_mqtt_user"
+MQTT_PASSWORD = "your_mqtt_password"
+MQTT_CLIENT_ID = ubinascii.hexlify(machine.unique_id())
+MQTT_KEEPALIVE = 120  # 设置心跳包时间为 120 秒
