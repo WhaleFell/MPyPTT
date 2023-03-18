@@ -12,5 +12,5 @@ MQTT_SERVER = "broker-cn.emqx.io"
 MQTT_PORT = 1883
 MQTT_USER = None
 MQTT_PASSWORD = None
-MQTT_CLIENT_ID = ubinascii.hexlify(machine.unique_id())
-MQTT_KEEPALIVE = 120  # 设置心跳包时间为 120 秒
+MQTT_CLIENT_ID = "mqttx_50d3308c"
+MQTT_KEEPALIVE = 0  # 设置心跳包时间为 120 秒

@@ -2,6 +2,7 @@
 import utils
 import config
 from mqttConnect import MQTT
+import utime
 import time
 from machine import Pin
 try:
@@ -34,19 +35,23 @@ def init():
 
     if utils.sync_ntp():
         print("sync time success!")
+    else:
+        print("[ERROR]sync time error")
+
+    print("current time:", utils.getTimestamp())
 
 
 def callback(topic, msg):
     print("rev topic:%s msg:%s" % (topic, msg))
     if "hello" in msg:
-        mqtt.syncPub("/h/#", msg="我喜欢做爱")
+        mqtt.syncPub("/opopp/", msg="hellppdwww1121")
 
 
 async def main():
 
     await uasyncio.create_task(
-        mqtt.subs(
-            "/hello/", cb=callback)
+        mqtt.sub(
+            "/hello/", callback=callback)
     ),
 
 if __name__ == "__main__":

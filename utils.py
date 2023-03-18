@@ -3,6 +3,7 @@
 import network
 import utime
 from machine import Pin
+import sys
 try:
     import uasyncio
 except ImportError:
@@ -30,7 +31,7 @@ def handle_error(tries=3):
                 try:
                     return func(*arg, **kw)
                 except Exception as e:
-                    continue
+                    sys.print_exception(e)
             return False
         return wrapper
     return deco
@@ -71,13 +72,15 @@ def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
 
 
 @handle_error(tries=3)
-def sync_ntp():
+def sync_ntp() -> bool:
     """通过网络校准时间"""
     ntptime.host = 'ntp1.aliyun.com'
     ntptime.settime()
-    utime.timezone(8 * 3600)  # 设置时区偏移量为东八区
-    print("Time set to: ", utime.localtime())
     return True
+
+
+def getTimestamp():
+    return utime.mktime(utime.localtime())+946656000
 
 
 if __name__ == "__main__":

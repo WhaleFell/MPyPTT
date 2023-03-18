@@ -3,6 +3,7 @@ import gc
 from umqtt.simple import MQTTClient
 import utime
 from utils import wifi, connectWIFI
+import sys
 # 兼容性导入
 try:
     import uasyncio
@@ -16,15 +17,15 @@ gc.collect()
 class MQTT(MQTTClient):
     """操作 MQTT 服务"""
 
-    def __init__(self, client_id, server, port=0, user=None, password=None, keeyalive=30, ssl=False, ssl_params=None, *arg, **kw):
+    def __init__(self, client_id, server, port=0, user=None, password=None, keeyalive=0, ssl=False, ssl_params=None, *arg, **kw):
         super().__init__(client_id, server, port, user,
                          password, keeyalive, ssl, ssl_params, *arg, **kw)
 
-        self.content = '{"timestamp":%s,"data":%s}'
+        self.content = '{"timestamp":%s,data:"%s"}'
 
     @property
-    def timestamp():
-        return utime.time()
+    def timestamp(self):
+        return utime.mktime(utime.localtime())+946656000
 
     async def sub(self, topic, callback):
         """订阅主题并保持连接
@@ -46,7 +47,9 @@ class MQTT(MQTTClient):
                 self.subscribe(b'%s' % topic)  # 设置订阅
                 self.check_msg()  # 非堵塞检查
             except Exception as e:
+                a = 0
                 print(f"[ERROR] Reconnect Now!{e}")
+                sys.print_exception(e)
                 if not wifi.isconnected():
                     connectWIFI()
                 # 设置重连
@@ -65,6 +68,7 @@ class MQTT(MQTTClient):
                 return
             except Exception as e:
                 print(f"[Error]send err:{e}")
+                utime.sleep(1)
                 continue
 
 
