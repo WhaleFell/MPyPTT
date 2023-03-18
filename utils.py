@@ -3,12 +3,10 @@
 import network
 import utime
 from machine import Pin
-from utime import sleep
 try:
     import uasyncio
 except ImportError:
     import asyncio as uasyncio
-
 
 import dht
 import ntptime
@@ -47,7 +45,7 @@ def reversePin(pin: Pin):
         pin.value(1)
 
 
-async def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
+def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
     """连接 WIFI"""
     global wifi
 
@@ -58,8 +56,8 @@ async def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bo
         i = 0
         print("Connection ing", end="")
         while not wifi.isconnected():
-            # utime.sleep(1)
-            await uasyncio.sleep(1)
+            utime.sleep(1)
+            # await uasyncio.sleep(1)
             i += 1
             if i >= timeout:
                 print("\nConnection timeout! Please check you SSID or PWD")
