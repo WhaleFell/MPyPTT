@@ -96,7 +96,6 @@ class MQTT(MQTTClient):
 
 
 if __name__ == "__main__":
-    wifi.disconnect()
     print("wifi disconnect!")
     mqtt = MQTT()
     # uasyncio.run(mqtt.subScribe(__sub_cb))

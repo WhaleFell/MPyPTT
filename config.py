@@ -8,9 +8,9 @@ WIFI_SSID = "HomeAP"
 WIFI_PASSWD = "992829hws"
 
 # MQTT config
-MQTT_SERVER = "your_mqtt_server"
+MQTT_SERVER = "broker-cn.emqx.io"
 MQTT_PORT = 1883
-MQTT_USER = "your_mqtt_user"
-MQTT_PASSWORD = "your_mqtt_password"
+MQTT_USER = ""
+MQTT_PASSWORD = ""
 MQTT_CLIENT_ID = ubinascii.hexlify(machine.unique_id())
 MQTT_KEEPALIVE = 120  # 设置心跳包时间为 120 秒

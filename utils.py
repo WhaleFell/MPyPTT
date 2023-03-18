@@ -47,7 +47,7 @@ def reversePin(pin: Pin):
         pin.value(1)
 
 
-def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
+async def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
     """连接 WIFI"""
     global wifi
 
@@ -58,7 +58,8 @@ def connectWIFI(wifi_ssid: str, wifi_passwd: str, timeout: int = 15) -> bool:
         i = 0
         print("Connection ing", end="")
         while not wifi.isconnected():
-            utime.sleep(1)
+            # utime.sleep(1)
+            await uasyncio.sleep(1)
             i += 1
             if i >= timeout:
                 print("\nConnection timeout! Please check you SSID or PWD")
