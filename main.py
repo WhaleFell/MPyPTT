@@ -47,7 +47,19 @@ def callback(topic, msg):
         mqtt.syncPub("/opopp/", msg="hellppdwww1121")
 
 
+async def setTime():
+    """定时设置时钟"""
+    while True:
+        await uasyncio.sleep(30*60)
+        if utils.sync_ntp():
+            print("sync time success!")
+        else:
+            print("[ERROR]sync time error")
+        print("current time:", utils.getTimestamp())
+
+
 async def main():
+    uasyncio.create_task(setTime())
 
     await uasyncio.create_task(
         mqtt.sub(
