@@ -3,7 +3,6 @@ import utils
 import config
 from mqttConnect import MQTT
 import utime
-import time
 from machine import Pin
 try:
     import uasyncio
@@ -31,7 +30,7 @@ def init():
             break
         else:
             led.value(1)
-            time.sleep(1)
+            utime.sleep(1)
 
     if utils.sync_ntp():
         print("sync time success!")

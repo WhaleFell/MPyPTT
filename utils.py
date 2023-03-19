@@ -9,7 +9,6 @@ try:
 except ImportError:
     import asyncio as uasyncio
 
-import dht
 import ntptime
 
 ### config ####
