@@ -22,6 +22,7 @@ class MQTT(MQTTClient):
                          password, keeyalive, ssl, ssl_params, *arg, **kw)
 
         self.content = '{"timestamp":%s,data:"%s"}'
+        self.eCallBack = None
 
     @property
     def timestamp(self):
@@ -42,6 +43,7 @@ class MQTT(MQTTClient):
                     isNeedConnect = False
 
                 a += 1
+                self.ping()
                 print(f"Keepconnect {a}")
                 self.set_callback(callback)  # 设置回调
                 self.subscribe(b'%s' % topic)  # 设置订阅
@@ -50,8 +52,8 @@ class MQTT(MQTTClient):
                 a = 0
                 print(f"[ERROR] Reconnect Now!{e}")
                 sys.print_exception(e)
-                if not wifi.isconnected():
-                    connectWIFI()
+                if self.eCallBack:
+                    await self.eCallBack()
                 # 设置重连
                 isNeedConnect = True
 

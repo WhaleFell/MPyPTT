@@ -41,6 +41,21 @@ def init():
     print("current time:", utils.getTimestamp())
 
 
+async def eCb():
+    while True:
+        led.value(0)
+        isWifi = utils.connectWIFI(config.WIFI_SSID, config.WIFI_PASSWD)
+        if isWifi:
+            led.value(1)
+            break
+        else:
+            led.value(1)
+            await uasyncio.sleep(3)
+
+
+mqtt.eCallBack = eCb
+
+
 def callback(topic, msg):
     print("rev topic:%s msg:%s" % (topic, msg))
     if "hello" in msg:
