@@ -8,3 +8,9 @@
 
 [micropython-async 的使用](https://github.com/peterhinch/micropython-async)
 [自己的项目MicroPythonEsp8266](https://github.com/WhaleFell/MicroPythonEsp8266)
+
+## ssh over https
+
+```text
+ssh://git@ssh.github.com:443/WhaleFell/MPyPTT
+```
